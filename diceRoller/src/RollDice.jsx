@@ -17,12 +17,13 @@ const [wounds, setWounds] = useState(4);
 const [sustainedHits, setSustainedHits] = useState(0);
 const [lethalHits, setLethalHits] = useState(false);
 const [criticalHit, setCriticalHit] = useState(6);
+const [rerollHits, setRerollHits] = useState("");
 const [devastatingWounds, setDevastatingWounds] = useState(false);
 
 const [result, setResult] = useState(null);
 
 function handleRoll() {
-    const r = resolveAttack({attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, criticalHit, devastatingWounds});
+    const r = resolveAttack({attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, criticalHit, rerollHits, devastatingWounds});
 
     setResult(r);
 }
@@ -100,10 +101,13 @@ return (
         </label>
         <label>
             rerollHits:
-            <input
-
-            />
         </label>
+        <select value={rerollHits} onChange={(e) => setRerollHits(e.target.value)}>
+            <option value="">No hit rolls</option>
+            <option value="rollOne">Hit rolls of 1</option>
+            <option value="failedHitRolls">Reroll failed hit rolls</option>
+            <option value="nonHitCritRoll">Reroll non critical rolls</option>
+        </select>
         <label>
             devastatingWounds:
             <input

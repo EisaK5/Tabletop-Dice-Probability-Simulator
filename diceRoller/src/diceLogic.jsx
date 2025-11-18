@@ -39,7 +39,7 @@ export function rollAndCountSuccess(numDice, target, sides = 6) {
 }
 
 export function resolveAttack({
-    attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds, criticalHit, sides = 6,
+    attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds, criticalHit, rerollHits, sides = 6,
 }) {
     //hit roll + sustained hits
     const hitRolls = [];
@@ -47,8 +47,20 @@ export function resolveAttack({
     let lethalWounds = 0;
     for (let  i = 0; i < attacks; i++) {
         //roll a die
-        const value = randomInt(1, sides);
-        hitRolls.push(value); //store role for display
+        let value = randomInt(1, sides);
+
+        if (rerollHits == "rollOne") {
+            if (value == 1)
+                value = randomInt(1, sides);
+        }
+        else if (rerollHits == "failedHitRolls") {
+            if (value < bsWs)
+                value = randomInt(1, sides);
+        }
+        else if (rerollHits == "nonHitCritRoll") {
+            if ( value < criticalHit)
+                value = randomInt(1, sides);
+        }
         
         if (value >= bsWs) {
             //lethal hits and sustained hits, add a wound roll and add sustained num to hits
@@ -62,8 +74,8 @@ export function resolveAttack({
                 hitCount += sustainedHits + 1;
             else //no lethals no sustained
                 hitCount += 1;
-
         }
+        hitRolls.push(value); //store role for display
     }
     
 
