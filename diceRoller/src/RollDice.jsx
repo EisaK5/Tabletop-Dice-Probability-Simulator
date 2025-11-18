@@ -16,12 +16,13 @@ const [damage, setDamage] = useState(2);
 const [wounds, setWounds] = useState(4);
 const [sustainedHits, setSustainedHits] = useState(0);
 const [lethalHits, setLethalHits] = useState(false);
+const [criticalHit, setCriticalHit] = useState(6);
 const [devastatingWounds, setDevastatingWounds] = useState(false);
 
 const [result, setResult] = useState(null);
 
 function handleRoll() {
-    const r = resolveAttack({attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds});
+    const r = resolveAttack({attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, criticalHit, devastatingWounds});
 
     setResult(r);
 }
@@ -90,17 +91,25 @@ return (
             />
         </label>
         <label>
-            devastatingWounds:
+            CriticalHit:
             <input
-                type="checkbox"
-                checked={devastatingWounds}
-                onChange={(e) => setDevastatingWounds(e.target.checked)}
+                type="number"
+                check={criticalHit}
+                onChange={(e) => setCriticalHit(Number(e.target.value))}
             />
         </label>
         <label>
             rerollHits:
             <input
 
+            />
+        </label>
+        <label>
+            devastatingWounds:
+            <input
+                type="checkbox"
+                checked={devastatingWounds}
+                onChange={(e) => setDevastatingWounds(e.target.checked)}
             />
         </label>
         <label>
@@ -150,11 +159,8 @@ return (
                 <p>Hits: {result.hitCount}</p>
                 <p>Lethal Hits: {result.lethalWounds}</p>
                 <p>Devastating Wounds: {result.devWounds}</p>
-
                 <p>Total Wounds: {result.woundCount}</p>
-
                 <p>Failed saves: {result.failedSaves}</p>
-
                 <p>Models killed: {result.modelsKilled}</p>
             </div>
         )}

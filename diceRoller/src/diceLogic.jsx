@@ -39,7 +39,7 @@ export function rollAndCountSuccess(numDice, target, sides = 6) {
 }
 
 export function resolveAttack({
-    attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds, sides = 6,
+    attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds, criticalHit, sides = 6,
 }) {
     //hit roll + sustained hits
     const hitRolls = [];
@@ -52,13 +52,13 @@ export function resolveAttack({
         
         if (value >= bsWs) {
             //lethal hits and sustained hits, add a wound roll and add sustained num to hits
-            if (sustainedHits > 0 && lethalHits && value == 6) { 
+            if (sustainedHits > 0 && lethalHits && value >= criticalHit) { 
                 hitCount += sustainedHits;
                 lethalWounds += 1;
             } //only lethal hits add a wound roll
-            else if (lethalHits && value == 6)
+            else if (lethalHits && value >= criticalHit)
                 lethalWounds += 1;
-            else if (sustainedHits > 0 && value == 6) //only sustained hits 
+            else if (sustainedHits > 0 && value >= criticalHit) //only sustained hits 
                 hitCount += sustainedHits + 1;
             else //no lethals no sustained
                 hitCount += 1;

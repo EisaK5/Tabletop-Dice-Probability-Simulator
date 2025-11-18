@@ -6,15 +6,14 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 .RollDice {
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* label input label input */
-    column-gap: 10;
-    row-gap: 15px;
-    align-items: center;
+    display: flex; 
+    flex-direction: column;
+    gap: 4px;
 }
 
 .RollDice input {
-    width: 100%;
+    width: 100px;
+    height: 25px;
     box-sizing: border-box;
 }
 
