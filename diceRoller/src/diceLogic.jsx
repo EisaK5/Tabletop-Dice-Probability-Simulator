@@ -39,7 +39,7 @@ export function rollAndCountSuccess(numDice, target, sides = 6) {
 }
 
 export function resolveAttack({
-    attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds, criticalHit, rerollHits, sides = 6,
+    attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, devastatingWounds, criticalHit, criticalWound, rerollHits, rerollWounds, sides = 6,
 }) {
     //hit roll + sustained hits
     const hitRolls = [];
@@ -87,8 +87,21 @@ export function resolveAttack({
     const woundTarget = getTarget(strength, toughness);
     let devWounds = 0;
     for (let i = 0; i < hitCount; i++) {
-        const value = randomInt(1, sides);
-        woundRolls.push(value);
+        let value = randomInt(1, sides);
+
+        if (rerollWounds == "rollOne") {
+            if (value == 1)
+                value = randomInt(1, sides);
+        }
+        else if (rerollWounds == "failedWoundRolls") {
+            if (value < woundTarget)
+                value = randomInt(1, sides);
+        }
+        else if (rerollWounds == "nonWoundCritRoll") {
+            if ( value < criticalWound)
+                value = randomInt(1, sides);
+        }
+
 
         if (value >= woundTarget) {
             if (devastatingWounds && value == 6) {
@@ -98,6 +111,8 @@ export function resolveAttack({
                 woundCount += 1;
             }
         }
+
+        woundRolls.push(value);
     }
 
 

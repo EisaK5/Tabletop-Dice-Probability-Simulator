@@ -17,13 +17,15 @@ const [wounds, setWounds] = useState(4);
 const [sustainedHits, setSustainedHits] = useState(0);
 const [lethalHits, setLethalHits] = useState(false);
 const [criticalHit, setCriticalHit] = useState(6);
+const [criticalWound, setCriticalWound] = useState(6);
 const [rerollHits, setRerollHits] = useState("");
+const [rerollWounds, setRerollWounds] = useState("");
 const [devastatingWounds, setDevastatingWounds] = useState(false);
 
 const [result, setResult] = useState(null);
 
 function handleRoll() {
-    const r = resolveAttack({attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, criticalHit, rerollHits, devastatingWounds});
+    const r = resolveAttack({attacks, bsWs, strength, toughness, save, invuln, ap, damage, wounds, sustainedHits, lethalHits, criticalHit, criticalWound, rerollHits, rerollWounds, devastatingWounds});
 
     setResult(r);
 }
@@ -109,6 +111,14 @@ return (
             <option value="nonHitCritRoll">Reroll non critical rolls</option>
         </select>
         <label>
+            CriticalWound:
+            <input
+                type="number"
+                check={criticalWound}
+                onChange={(e) => setCriticalWound(Number(e.target.value))}
+            />
+        </label>
+        <label>
             devastatingWounds:
             <input
                 type="checkbox"
@@ -118,10 +128,13 @@ return (
         </label>
         <label>
             rerollWounds:
-            <input
-
-            />
         </label>
+        <select value={rerollWounds} onChange={(e) => setRerollWounds(e.target.value)}>
+            <option value="">No wound rolls</option>
+            <option value="rollOne">Wound rolls of 1</option>
+            <option value="failedWoundRolls">Reroll failed wound rolls</option>
+            <option value="nonWoundCritRoll">Reroll non critical rolls</option>
+        </select>
         
         <label>
             Toughness:
@@ -165,6 +178,7 @@ return (
                 <p>Devastating Wounds: {result.devWounds}</p>
                 <p>Total Wounds: {result.woundCount}</p>
                 <p>Failed saves: {result.failedSaves}</p>
+                <p>Total damage: {result.failedSaves * damage}</p>
                 <p>Models killed: {result.modelsKilled}</p>
             </div>
         )}
