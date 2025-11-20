@@ -215,6 +215,8 @@ return (
                 <p>Failed saves: {result.avgFailedSaves}</p>
                 <p>Total damage: {result.avgModelsKilled * damage}</p>
                 <p>Models killed: {result.avgModelsKilled}</p>
+
+                <BarChart result={result} />
             </div>
         )}
     </div>
