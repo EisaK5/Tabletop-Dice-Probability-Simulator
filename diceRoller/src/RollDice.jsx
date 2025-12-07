@@ -239,7 +239,6 @@ return (
             
                 <ResultsBarChart result={result} />
 
-                <h2>Profile Ratings</h2>
 
                 
                 
